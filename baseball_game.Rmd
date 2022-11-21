@@ -1,0 +1,61 @@
+---
+title: "Baseball_game"
+author: "TeamQ"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 숫자야구 코드
+```{r}
+baseball_game <- function(gameRound=1, numberLength, Input){
+  if(gameRound == 1){
+    print("3을 눌러주세요")
+    numberLength <- scan(n=1, quiet=TRUE)
+    numberLength <- trunc(numberLength)
+    if(numberLength != 3){
+      print("잘못 입력하셨습니다. 다시 입력해주세요")
+      return(baseball_game(gameRound=1, numberLength, Input))
+    }
+    RightAnswer <- sample(0:9)
+    Input <- RightAnswer[1:numberLength]
+  }
+  print("추측값 세자리를 순서대로 입력하세요")
+  userInput <- scan(n=numberLength, quiet=TRUE)
+  print(userInput)
+  strike <- 0
+  ball <- 0
+  out <- 0
+  strike <- sum(Input == userInput)
+  for(i in 1:numberLength){
+    for(j in 1:numberLength){
+      if(Input[i] == userInput[j]){
+        ball <- ball + 1
+      }
+    }
+  }
+  ball <- ball - strike
+  out <- numberLength - strike - ball
+  if(strike == numberLength){
+    return(cat("","정답입니다!","\n",gameRound,"번만의 성공입니다","\n"))
+  }
+  if(strike != numberLength){
+    gameRound <- gameRound + 1
+    cat("",strike,"Strike","\n",ball,"Ball","\n",out,"Out 입니다.","\n")
+    return(baseball_game(gameRound, numberLength, Input))
+  }
+}
+```
+
+## 게임 실행
+
+```{r}
+baseball_game()
+```
+
+## 게임 초기화
+```{r}
+rm()
+```
